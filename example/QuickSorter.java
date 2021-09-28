@@ -1,7 +1,6 @@
 package example;
 
-public class BubbleSorter implements Sorter{
-
+public class QuickSorter implements Sorter{
 	
 	private int[] a;
 	private String plan = "";
@@ -12,27 +11,30 @@ public class BubbleSorter implements Sorter{
 	}
 	
 	private void swap(int i,int j) {
-		if(i == j)return;
+		if(a[i] == a[j])return;
 		int temp = a[i];
 		a[i] = a[j];
 		a[j] = temp;
 		plan += "" + a[i] + "<->" + a[j] + "\n";
 	}
 	
-	
+	private void quickSort(int left,int right) {
+		if(left >= right)return;
+		int tip = left;
+		for(int i = left + 1;i <= right;++i) {
+			if(a[i] < a[left]) {
+				tip++;
+				swap(tip,i);
+			}
+		}
+		swap(left,tip);
+		quickSort(left,tip - 1);
+		quickSort(tip + 1,right);
+	}
 
 	@Override
 	public void sort() {
-		boolean sorted = false;
-		while(!sorted) {
-			sorted = true;
-			for(int i = 0;i < a.length - 1;++i) {
-				if(a[i] > a[i + 1]) {
-					swap(i,i+1);
-					sorted = false;
-				}
-			}
-		}
+		quickSort(0,a.length - 1);
 	}
 
 	@Override
